@@ -60,30 +60,37 @@ formulario.addEventListener("submit", (e) => {
   let usuarioIngresado = e.target.children[0].value;
   let claveIngresada = e.target.children[1].value;
 
-  if (usuarioIngresado === usuario && claveIngresada === clave) {
-    Swal.fire({
-      icon: "success",
-      title: "Felicidades",
-      text: "Inicio exitoso",
-    });
-    // alert("Inicio exitoso");
-    localStorage.setItem("sesion", JSON.stringify(true));
+  fetch("./js/data.json")
+    .then((response) => response.json())
+    .then((json) => {
+      if (
+        json.find((el) => el.nombre === usuarioIngresado) &&
+        json.find((el) => el.contraseña === claveIngresada)
+      ) {
+        Swal.fire({
+          icon: "success",
+          title: "Felicidades",
+          text: "Inicio exitoso",
+        });
+        // alert("Inicio exitoso");
+        localStorage.setItem("sesion", JSON.stringify(true));
 
-    const usuarioAGuardar = {
-      nombre: usuarioIngresado,
-      clave: claveIngresada,
-    };
+        const usuarioAGuardar = {
+          nombre: usuarioIngresado,
+          clave: claveIngresada,
+        };
 
-    localStorage.setItem("usuario", JSON.stringify(usuarioAGuardar));
-    sesionIniciada(usuarioIngresado);
-  } else {
-    Swal.fire({
-      icon: "error",
-      title: "Oops...",
-      text: "Credenciales inválidas",
+        localStorage.setItem("usuario", JSON.stringify(usuarioAGuardar));
+        sesionIniciada(usuarioIngresado);
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Credenciales inválidas",
+        });
+        // alert("Credenciales inválidas");
+      }
     });
-    // alert("Credenciales inválidas");
-  }
 });
 
 if (sesion) {
