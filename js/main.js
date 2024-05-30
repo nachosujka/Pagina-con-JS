@@ -18,7 +18,7 @@ function sesionIniciada(usuarioIngresado) {
 
   boton.onclick = () => {
     // let titulo = document.createElement("h1");
-    // titulo.id = titulo;
+    // titulo.id = "titulo";
     // titulo.innerText = "Ingresa a tu cuenta";
 
     let user = document.createElement("input");
@@ -30,8 +30,8 @@ function sesionIniciada(usuarioIngresado) {
     let pass = document.createElement("input");
     pass.type = "password";
     pass.id = "password";
-    user.placeholder = "Ingresa tu contraseña";
-    user.required;
+    pass.placeholder = "Ingresa tu contraseña";
+    pass.required;
 
     let btn = document.createElement("button");
     btn.type = "submit";
@@ -86,10 +86,10 @@ formulario.addEventListener("submit", (e) => {
   }
 });
 
-// if (sesion) {
-//   sesionIniciada(usuarioGuardado.nombre);
-// }
+if (sesion) {
+  sesionIniciada(usuarioGuardado.nombre);
+}
 
-sesion
-  ? sesionIniciada(usuarioGuardado.nombre)
-  : sesionIniciada(usuarioGuardado.nombre);
+fetch("./js/data.json")
+  .then((response) => response.json())
+  .then((json) => console.log("Cuentas :", json));
