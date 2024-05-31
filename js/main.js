@@ -1,7 +1,6 @@
 const formulario = document.getElementById("formulario");
 
-const usuario = "nacho";
-const clave = "nacho123";
+let usuario = [];
 
 let sesion = JSON.parse(localStorage.getItem("sesion"));
 let usuarioGuardado = JSON.parse(localStorage.getItem("usuario"));
@@ -62,41 +61,36 @@ formulario.addEventListener("submit", (e) => {
 
   fetch("./js/data.json")
     .then((response) => response.json())
-    .then((json) => {
-      if (
-        json.find((el) => el.nombre === usuarioIngresado) &&
-        json.find((el) => el.contraseña === claveIngresada)
-      ) {
-        Swal.fire({
-          icon: "success",
-          title: "Felicidades",
-          text: "Inicio exitoso",
-        });
-        // alert("Inicio exitoso");
-        localStorage.setItem("sesion", JSON.stringify(true));
-
-        const usuarioAGuardar = {
-          nombre: usuarioIngresado,
-          clave: claveIngresada,
-        };
-
-        localStorage.setItem("usuario", JSON.stringify(usuarioAGuardar));
-        sesionIniciada(usuarioIngresado);
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "Credenciales inválidas",
-        });
-        // alert("Credenciales inválidas");
-      }
+    .then((data) => {
+      data.forEach((el) => usuario.push(el));
     });
+  if (
+    usuario.find((el) => el.nombre === usuarioIngresado) &&
+    usuario.find((el) => el.contraseña === claveIngresada)
+  ) {
+    Swal.fire({
+      icon: "success",
+      title: "Felicidades",
+      text: "Inicio exitoso",
+    });
+    localStorage.setItem("sesion", JSON.stringify(true));
+
+    const usuarioAGuardar = {
+      nombre: usuarioIngresado,
+      clave: claveIngresada,
+    };
+
+    localStorage.setItem("usuario", JSON.stringify(usuarioAGuardar));
+    sesionIniciada(usuarioIngresado);
+  } else {
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Credenciales inválidas",
+    });
+  }
 });
 
 if (sesion) {
   sesionIniciada(usuarioGuardado.nombre);
 }
-
-fetch("./js/data.json")
-  .then((response) => response.json())
-  .then((json) => console.log("Cuentas :", json));
